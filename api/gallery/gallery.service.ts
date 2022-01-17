@@ -83,31 +83,31 @@ export class GalleryService {
     return link;
   }
 
-  async saveImageToDB(
-    file: multipartParser.MultipartRequest,
-    filename: string,
-    email: string
-  ) {
-    const params = {
-      TableName: getEnv("USERS_TABLE_NAME"),
-      Item: {
-        email: { S: email },
-        data: { S: `image_${await this.hashImage(filename)} ` },
-        image: { S: this.cutEmail(filename, email) },
-        metadata: {
-          S: JSON.stringify({
-            ContentType: file.contentType,
-          }),
-        },
-        URL: {
-          S: `https://${getEnv("IMAGES_BUCKET_NAME")}.s3.${getEnv(
-            "REGION"
-          )}.amazonaws.com/${email}/${this.cutEmail(filename, email)}`,
-        },
-      },
-    };
-    return await DynamoClient.send(new PutItemCommand(params));
-  }
+  // async saveImageToDB(
+  //   file: multipartParser.MultipartRequest,
+  //   filename: string,
+  //   email: string
+  // ) {
+  //   const params = {
+  //     TableName: getEnv("USERS_TABLE_NAME"),
+  //     Item: {
+  //       email: { S: email },
+  //       data: { S: `image_${await this.hashImage(filename)} ` },
+  //       image: { S: this.cutEmail(filename, email) },
+  //       metadata: {
+  //         S: JSON.stringify({
+  //           ContentType: file.contentType,
+  //         }),
+  //       },
+  //       URL: {
+  //         S: `https://${getEnv("IMAGES_BUCKET_NAME")}.s3.${getEnv(
+  //           "REGION"
+  //         )}.amazonaws.com/${email}/${this.cutEmail(filename, email)}`,
+  //       },
+  //     },
+  //   };
+  //   return await DynamoClient.send(new PutItemCommand(params));
+  // }
 
   async sendGalleryObject(images): Promise<Response> {
     return {
