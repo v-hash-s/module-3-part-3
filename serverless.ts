@@ -8,6 +8,7 @@ import { galleryConfig } from "./config/serverless/parts/gallery";
 import { joinParts } from "./config/serverless/utils";
 import { TableConfig } from "./config/serverless/parts/tables";
 import { BucketConfig } from "./config/serverless/parts/s3";
+import { apiPexelsConfig } from "./config/serverless/parts/apiPexels";
 
 const masterConfig: AWS = {
   service: "vs-sls",
@@ -126,4 +127,5 @@ module.exports = joinParts(masterConfig, [
   galleryConfig,
   TableConfig,
   BucketConfig,
+  apiPexelsConfig,
 ]);
