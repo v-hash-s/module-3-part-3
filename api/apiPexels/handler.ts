@@ -27,16 +27,8 @@ export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
 
 export const postPexelsPhotos: APIGatewayProxyHandlerV2 = async (event) => {
   const client = createClient(getEnv("PEXELS_API_KEY"));
-  // const service = new PexelsService(event, client);
   const ids = JSON.parse(event.body!).ids;
   log(ids);
-  // const photos = Promise.all(
-  //   ids.map(async (id) => {
-  //     await client.photos.show({ id: id }).then((photo) => {
-  //       return photo;
-  //     });
-  //   })
-  // );
   const photos = await Promise.all(
     ids.map(async (id) => {
       return await client.photos.show({ id: id });
@@ -45,6 +37,9 @@ export const postPexelsPhotos: APIGatewayProxyHandlerV2 = async (event) => {
 
   log("photos from array: ");
   log(photos);
+
+  /// upload to s3 image
+
   //@ts-ignore
   try {
     //@ts-ignore
