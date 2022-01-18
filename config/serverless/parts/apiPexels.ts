@@ -28,5 +28,18 @@ export const apiPexelsConfig: AWSPartitial = {
         },
       ],
     },
+
+    postPexelsPhotos: {
+      handler: "api/apiPexels/handler.postPexelsPhotos",
+      memorySize: 128,
+      events: [
+        {
+          http: {
+            path: "/gallery/pexels",
+            method: "post",
+          },
+        },
+      ],
+    },
   },
 };

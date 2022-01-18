@@ -1,5 +1,6 @@
-interface Photos {
-  photos: object;
+interface Response {
+  content: Array<string>;
+  statusCode: number;
 }
 
-export { Photos };
+export { Response };
