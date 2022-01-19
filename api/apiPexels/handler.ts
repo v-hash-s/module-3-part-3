@@ -38,7 +38,9 @@ export const postPexelsPhotos: APIGatewayProxyHandlerV2 = async (event) => {
   const ids = JSON.parse(event.body!).ids;
   const email = await manager.getUserEmail(token);
   // const client = createClient(getEnv("PEXELS_API_KEY"));
-  await manager.savePexelsImagesToS3(email, ids);
+  // await manager.savePexelsImagesToDynamoDB(email, );
+  // await manager.savePexelsImagesToS3(email, ids);
+  await manager.savePexelsImages(ids, email);
   // const photosIds = await Promise.all(
   //   ids.map(async (id) => {
   //     return await client.photos.show({ id: id });

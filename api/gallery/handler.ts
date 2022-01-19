@@ -1,7 +1,7 @@
 import { GalleryService } from "./gallery.service";
 import { createResponse } from "@helper/http-api/response";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-// import { log } from "@helper/logger";
+import { log } from "@helper/logger";
 import * as multipartParser from "lambda-multipart-parser";
 import { Response } from "./gallery.interfaces";
 import { GalleryManager } from "./gallery.manager";
@@ -44,6 +44,7 @@ export const upload = async (event) => {
       event.Records[0].s3.object.key.split("/")[0]
     );
     const filename = event.Records[0].s3.object.key.split("/")[1];
+    log(filename);
 
     return await manager.updateValue(filename, user);
   } catch (error) {

@@ -8,7 +8,7 @@ import { getEnv } from "@helper/environment";
 export const authenticationJWT = async (event) => {
   log("event: ");
   log(event);
-  // log(event.headers);
+  log(event.headers);
   const token = event.headers.Authorization.split(" ")[1];
   try {
     let user = JWT.verify(token, getEnv("TOKEN_KEY"));
