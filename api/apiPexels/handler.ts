@@ -11,8 +11,6 @@ import * as multipartParser from "lambda-multipart-parser";
 const axios = require("axios");
 import { S3Service } from "../../services/s3.service";
 import * as sharp from "sharp";
-import { ListObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3Client } from "@services/s3Client";
 
 const S3 = new S3Service();
 
@@ -22,7 +20,7 @@ export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
   const client = createClient(getEnv("PEXELS_API_KEY"));
   const service = new PexelsService(event, client);
   //@ts-ignore
-  const photos = await service.getPexelsPhotos();
+  const photos = await service.getPexelsPhotosByQuery();
   try {
     //@ts-ignore
     const result = { statusCode: 200, content: photos };
@@ -33,43 +31,33 @@ export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
 };
 
 export const postPexelsPhotos: APIGatewayProxyHandlerV2 = async (event) => {
-  const client = createClient(getEnv("PEXELS_API_KEY"));
-  const ids = JSON.parse(event.body!).ids;
-  // log(ids);
-  const photosIds = await Promise.all(
-    ids.map(async (id) => {
-      return await client.photos.show({ id: id });
-    })
-  );
-  // log(photosIds[0].src.original);
-
-  // log("photos from array: ");
-  // log(photos);
-
-  /// upload to s3 image
+  const manager = new PexelsManager();
+  const service = new PexelsService();
   //@ts-ignore
-
-  // const image = await axios.get(
-  //   "https://images.pexels.com/photos/1440476/pexels-photo-1440476.jpeg?auto=compress&cs=tinysrgb&h=130",
-  //   { responseType: "arraybuffer" }
+  const token = event.headers.Authorization.split(" ")[1];
+  const ids = JSON.parse(event.body!).ids;
+  const email = await manager.getUserEmail(token);
+  // const client = createClient(getEnv("PEXELS_API_KEY"));
+  await manager.savePexelsImagesToS3(email, ids);
+  // const photosIds = await Promise.all(
+  //   ids.map(async (id) => {
+  //     return await client.photos.show({ id: id });
+  //   })
   // );
-  // log(image.data);
-  log("ids: ");
-  for (const id of photosIds) {
-    const image = await axios.get(id.src.original, {
-      responseType: "arraybuffer",
-    });
-    log("photo info: ", id.id);
-    log("buffer: ", image.data);
-    const command = new PutObjectCommand({
-      Bucket: getEnv("IMAGES_BUCKET_NAME"),
-      Body: image.data,
-      Key: `pexels_${id.id}.jpeg`,
-      ACL: "public-read",
-      ContentType: "image/jpeg",
-    });
-    const response = await s3Client.send(command);
-  }
+
+  // for (const photo of photos) {
+  //   const image = await axios.get(photo.src.original, {
+  //     responseType: "arraybuffer",
+  //   });
+  //   const command = new PutObjectCommand({
+  //     Bucket: getEnv("IMAGES_BUCKET_NAME"),
+  //     Body: image.data,
+  //     Key: `${email}/pexels_${photo.id}.jpeg`,
+  //     ACL: "public-read",
+  //     ContentType: "image/jpeg",
+  //   });
+  //   await s3Client.send(command);
+  // }
 
   // const res = await axios.put(url, image.data);
   // const axiosResponse = await axios.put(
