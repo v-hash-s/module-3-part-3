@@ -19,6 +19,7 @@ const envs: Record<string, string | undefined> = {
   TOKEN_KEY: process.env.SALT_ROUNDS,
   IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
   PEXELS_API_KEY: process.env.PEXELS_API_KEY,
+  IMAGES_BUCKET_NAME_SUBCLIP: process.env.IMAGES_BUCKET_NAME_SUBCLIP,
 };
 
 export type Stage = "local" | "dev" | "test" | "prod";
