@@ -29,6 +29,20 @@ export const apiPexelsConfig: AWSPartitial = {
       ],
     },
 
+    saveImagesSubclip: {
+      handler: "api/apiPexels/handler.saveImagesSubclip",
+      memorySize: 128,
+      events: [
+        {
+          s3: {
+            bucket: "vs-sls-test-gallerys3",
+            event: "s3:ObjectCreated:*",
+            existing: true,
+          },
+        },
+      ],
+    },
+
     postPexelsPhotos: {
       handler: "api/apiPexels/handler.postPexelsPhotos",
       memorySize: 128,

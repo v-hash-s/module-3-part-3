@@ -8,6 +8,7 @@ import { PexelsService } from "./apiPexels.service";
 import { DynamoClient } from "../../services/dynamodb-client";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import * as crypto from "crypto";
+import * as sharp from "sharp";
 
 export class PexelsManager {
   private readonly service: PexelsService;
@@ -29,9 +30,12 @@ export class PexelsManager {
       const image = await axios.get(photo.src.original, {
         responseType: "arraybuffer",
       });
+
       const command = new PutObjectCommand({
         Bucket: getEnv("IMAGES_BUCKET_NAME"),
         Body: image.data,
+        // Body: resizedImage,
+
         //@ts-ignore
 
         Key: `${email}/pexels_${photo.id}.jpeg`,
@@ -68,7 +72,7 @@ export class PexelsManager {
     const photos = await this.service.getPexelsPhotosByIds(ids);
     // log("photos: ", photos[0].id);
     for (const photo of photos) {
-      log(photo);
+      // log(photo);
       //@ts-ignore
       await this.savePexelsImagesToDynamoDB(email, photo.id);
       await this.savePexelsImagesToS3(email, ids);

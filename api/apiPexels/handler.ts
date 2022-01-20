@@ -29,7 +29,12 @@ export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
   }
 };
 
-export const postPexelsPhotos: APIGatewayProxyHandlerV2 = async (event) => {
+export const saveImagesSubclip = async (event) => {
+  log("hey from subclipping");
+};
+
+export const postPexelsPhotos = async (event) => {
+  log("hello from post pexels");
   const manager = new PexelsManager();
   const service = new PexelsService();
   //@ts-ignore

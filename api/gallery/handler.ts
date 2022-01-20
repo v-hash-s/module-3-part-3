@@ -37,6 +37,7 @@ export const getGallery: APIGatewayProxyHandlerV2<Response> = async (event) => {
 };
 
 export const upload = async (event) => {
+  log("hello from upload!!!");
   const manager = new GalleryManager();
 
   try {
@@ -44,7 +45,7 @@ export const upload = async (event) => {
       event.Records[0].s3.object.key.split("/")[0]
     );
     const filename = event.Records[0].s3.object.key.split("/")[1];
-    log(filename);
+    log("this is filename: ", filename);
 
     return await manager.updateValue(filename, user);
   } catch (error) {
@@ -53,6 +54,7 @@ export const upload = async (event) => {
 };
 
 export const getPresignedUrl = async (event) => {
+  log("hello from presigning url");
   try {
     const service = new GalleryService();
     //@ts-ignore
