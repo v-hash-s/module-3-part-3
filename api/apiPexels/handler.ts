@@ -13,7 +13,6 @@ import { S3Service } from "../../services/s3.service";
 import * as sharp from "sharp";
 
 const S3 = new S3Service();
-
 export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
   event
 ) => {
