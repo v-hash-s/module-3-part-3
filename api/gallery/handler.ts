@@ -36,7 +36,7 @@ export const getGallery: APIGatewayProxyHandlerV2<Response> = async (event) => {
   }
 };
 
-export const upload = async (event) => {
+export const updateStatus = async (event) => {
   log("hello from upload!!!");
   const manager = new GalleryManager();
 

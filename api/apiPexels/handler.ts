@@ -11,6 +11,7 @@ import * as multipartParser from "lambda-multipart-parser";
 const axios = require("axios");
 import { S3Service } from "../../services/s3.service";
 import * as sharp from "sharp";
+import { SQSService } from "../../services/sqs.service";
 
 const S3 = new S3Service();
 export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
@@ -34,17 +35,22 @@ export const saveImagesSubclip = async (event) => {
 };
 
 export const postPexelsPhotos = async (event) => {
+  log("event: ", JSON.parse(event.Records[0].body));
   log("hello from post pexels");
   const manager = new PexelsManager();
   const service = new PexelsService();
+  const body = JSON.parse(event.Records[0].body);
+  const token = body.token;
+  const ids = body.ids;
+
   //@ts-ignore
-  const token = event.headers.Authorization.split(" ")[1];
-  const ids = JSON.parse(event.body!).ids;
-  const email = await manager.getUserEmail(token);
+  // const token = event.headers.Authorization.split(" ")[1]; !!!!!!!!!!!
+  // const ids = JSON.parse(event.body!).ids;!!!!!!!!!!!!
+  // const email = await manager.getUserEmail(token); !!!!!!!!!
   // const client = createClient(getEnv("PEXELS_API_KEY"));
   // await manager.savePexelsImagesToDynamoDB(email, );
   // await manager.savePexelsImagesToS3(email, ids);
-  await manager.savePexelsImages(ids, email);
+  // await manager.savePexelsImages(ids, email); !!!!!!!!!
   // const photosIds = await Promise.all(
   //   ids.map(async (id) => {
   //     return await client.photos.show({ id: id });
@@ -94,4 +100,15 @@ export const postPexelsPhotos = async (event) => {
   } catch (err) {
     return errorHandler(err);
   }
+};
+
+export const sendMessageSQS = async (event) => {
+  log("event from sqs: ", event);
+  const token: string = event.headers.Authorization.split(" ")[1];
+  const ids = event.body!.ids;
+  log(ids);
+  const sqs = new SQSService(getEnv("SQS_QUEUE_URL"));
+  log("is about to send sqs message");
+
+  await sqs.sendMessage(JSON.stringify({ token: token, ids: ids }));
 };

@@ -30,8 +30,8 @@ export const galleryConfig: AWSPartitial = {
       ],
     },
 
-    upload: {
-      handler: "api/gallery/handler.upload",
+    updateStatus: {
+      handler: "api/gallery/handler.updateStatus",
       memorySize: 128,
       events: [
         {

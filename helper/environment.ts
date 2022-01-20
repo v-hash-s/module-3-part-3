@@ -20,6 +20,10 @@ const envs: Record<string, string | undefined> = {
   IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
   PEXELS_API_KEY: process.env.PEXELS_API_KEY,
   IMAGES_BUCKET_NAME_SUBCLIP: process.env.IMAGES_BUCKET_NAME_SUBCLIP,
+  IMAGES_QUEUE_NAME: process.env.IMAGES_QUEUE_NAME,
+  IMAGES_QUEUE_URL: process.env.IMAGES_QUEUE_URL,
+  SQS_QUEUE_URL: process.env.SQS_QUEUE_URL,
+  SQS_QUEUE: process.env.SQS_QUEUE,
 };
 
 export type Stage = "local" | "dev" | "test" | "prod";

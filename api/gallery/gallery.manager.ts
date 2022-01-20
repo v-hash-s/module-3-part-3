@@ -152,7 +152,7 @@ export class GalleryManager {
   }
 
   async updateValue(filename: string, email: string): Promise<void> {
-    log("hello from update value lol");
+    log("hello from update value lol: ", filename);
     const hashedImage = crypto.createHash("md5").update(filename).digest("hex");
     const params = {
       TableName: getEnv("USERS_TABLE_NAME"),
