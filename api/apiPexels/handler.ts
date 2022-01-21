@@ -46,11 +46,11 @@ export const postPexelsPhotos = async (event) => {
   //@ts-ignore
   // const token = event.headers.Authorization.split(" ")[1]; !!!!!!!!!!!
   // const ids = JSON.parse(event.body!).ids;!!!!!!!!!!!!
-  // const email = await manager.getUserEmail(token); !!!!!!!!!
+  const email = await manager.getUserEmail(token);
   // const client = createClient(getEnv("PEXELS_API_KEY"));
   // await manager.savePexelsImagesToDynamoDB(email, );
   // await manager.savePexelsImagesToS3(email, ids);
-  // await manager.savePexelsImages(ids, email); !!!!!!!!!
+  await manager.savePexelsImages(ids, email);
   // const photosIds = await Promise.all(
   //   ids.map(async (id) => {
   //     return await client.photos.show({ id: id });

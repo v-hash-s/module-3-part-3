@@ -78,6 +78,17 @@ export const apiPexelsConfig: AWSPartitial = {
     //     },
     //   ],
     // },
+    // saveImagesSubclip: {
+    //   handler: "api/apiPexels/handler.saveImagesSubclip",
+    //   memorySize: 128,
+    //   events: [
+    //     {
+    //       sqs: {
+    //         arn: "arn:aws:sqs:us-east-1:367315594041:sqs_queue",
+    //       },
+    //     },
+    //   ],
+    // },
 
     postPexelsPhotos: {
       handler: "api/apiPexels/handler.postPexelsPhotos",
