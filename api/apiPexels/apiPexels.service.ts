@@ -1,4 +1,3 @@
-import { log } from "../../helper/logger";
 import { createClient } from "pexels";
 import { getEnv } from "@helper/environment";
 
@@ -15,7 +14,7 @@ export class PexelsService {
     this.client = client;
   }
 
-  async getPexelsPhotosByQuery() {
+  async getPexelsPhotosByQuery(): Promise<string> {
     const photos = await this.client.photos.search({
       query: this.query,
       per_page: this.limit,

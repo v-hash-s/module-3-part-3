@@ -8,23 +8,12 @@ import * as multipartParser from "lambda-multipart-parser";
 import { s3Client } from "@services/s3Client";
 import { S3Service } from "../../services/s3.service";
 const S3 = new S3Service();
-// import { log } from "../../helper/logger";
 import * as crypto from "crypto";
 
 import { String } from "aws-sdk/clients/cloudhsm";
 import { Response } from "./gallery.interfaces";
 
 export class GalleryService {
-  // private readonly content?;
-  // private readonly filename?;
-  // private readonly token?;
-
-  // constructor(payload?, token?) {
-  //   this.content = payload?.files[0]?.content;
-  //   this.filename = payload?.files[0]?.filename;
-  //   this.token = token;
-  // }
-
   async isExist(
     payload: multipartParser.MultipartRequest,
     email: string
@@ -83,32 +72,6 @@ export class GalleryService {
     return link;
   }
 
-  // async saveImageToDB(
-  //   file: multipartParser.MultipartRequest,
-  //   filename: string,
-  //   email: string
-  // ) {
-  //   const params = {
-  //     TableName: getEnv("USERS_TABLE_NAME"),
-  //     Item: {
-  //       email: { S: email },
-  //       data: { S: `image_${await this.hashImage(filename)} ` },
-  //       image: { S: this.cutEmail(filename, email) },
-  //       metadata: {
-  //         S: JSON.stringify({
-  //           ContentType: file.contentType,
-  //         }),
-  //       },
-  //       URL: {
-  //         S: `https://${getEnv("IMAGES_BUCKET_NAME")}.s3.${getEnv(
-  //           "REGION"
-  //         )}.amazonaws.com/${email}/${this.cutEmail(filename, email)}`,
-  //       },
-  //     },
-  //   };
-  //   return await DynamoClient.send(new PutItemCommand(params));
-  // }
-
   async sendGalleryObject(images): Promise<Response> {
     return {
       content: JSON.stringify(images),
@@ -128,31 +91,4 @@ export class GalleryService {
     // @ts-ignore
     return email.email;
   }
-
-  // async returnGalleryResponse(galleryResponse: Response): Promise<Response> {
-  //   if (galleryResponse) {
-  //     return {
-  //       statusCode: 200,
-  //       content: galleryResponse,
-  //     };
-  //   } else {
-  //     return {
-  //       statusCode: 404,
-  //       content: { errorMessage: "Images not found" },
-  //     };
-  //   }
-  // }
-
-  // async returnResponse(isImageUploaded): Promise<Response> {
-  //   if (isImageUploaded) {
-  //     return {
-  //       content: "Image is successfully uploaded",
-  //       statusCode: 200,
-  //     };
-  //   }
-  //   return {
-  //     content: "Error occured",
-  //     statusCode: 500,
-  //   };
-  // }
 }

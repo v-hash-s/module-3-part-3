@@ -37,8 +37,6 @@ export const getGallery: APIGatewayProxyHandlerV2<Response> = async (event) => {
 };
 
 export const updateStatus = async (event) => {
-  log("hello from upload!!!");
-  log(event.Records);
   const manager = new GalleryManager();
 
   try {
@@ -46,9 +44,7 @@ export const updateStatus = async (event) => {
       event.Records[0].s3.object.key.split("/")[0]
     );
     const filename = event.Records[0].s3.object.key.split("/")[1];
-    log("this is filename: ", filename);
 
-    // return await manager.updateValue(filename, user);
     await manager.updateValue(filename, user);
     await manager.saveSubclip(filename, user);
     await manager.updateSubclipStatus(filename, user);
@@ -59,7 +55,6 @@ export const updateStatus = async (event) => {
 };
 
 export const getPresignedUrl = async (event) => {
-  log("hello from presigning url");
   try {
     const service = new GalleryService();
     //@ts-ignore
@@ -71,8 +66,4 @@ export const getPresignedUrl = async (event) => {
   } catch (error) {
     return errorHandler(error);
   }
-};
-
-export const saveSubclipToDynamo = async (event) => {
-  log("saving subcli to dynamo: ", event);
 };

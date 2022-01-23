@@ -4,7 +4,6 @@ import { User } from "./auth.interfaces";
 import * as bcrypt from "bcryptjs";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoClient } from "@services/dynamodb-client";
-import { log } from "@helper/logger";
 
 export class AuthService {
   signJWTToken(userEmail: string): string {
@@ -21,7 +20,7 @@ export class AuthService {
       },
     };
     const PutItem = new PutItemCommand(params);
-    const userPutResult = await DynamoClient.send(PutItem);
+    await DynamoClient.send(PutItem);
   }
 
   async hashPassword(password: string): Promise<string> {

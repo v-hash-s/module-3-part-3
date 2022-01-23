@@ -1,6 +1,5 @@
 import { AuthService } from "./auth.service";
 import * as bcrypt from "bcryptjs";
-import { log } from "@helper/logger";
 import { User, Response } from "./auth.interfaces";
 import { getEnv } from "@helper/environment";
 import { DynamoClient } from "@services/dynamodb-client";

@@ -2,26 +2,25 @@ import { log } from "../../helper/logger";
 import * as jwt from "jsonwebtoken";
 import { getEnv } from "../../helper/environment";
 const axios = require("axios");
-import { ListObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@services/s3Client";
 import { PexelsService } from "./apiPexels.service";
 import { DynamoClient } from "../../services/dynamodb-client";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import * as crypto from "crypto";
-import * as sharp from "sharp";
 
 export class PexelsManager {
   private readonly service: PexelsService;
   constructor() {
     this.service = new PexelsService();
   }
-  async getUserEmail(token: string) {
+  async getUserEmail(token: string): Promise<string> {
     const email = jwt.verify(token, getEnv("TOKEN_KEY"));
     // @ts-ignore
     return email.email;
   }
 
-  async savePexelsImagesToS3(email, ids) {
+  async savePexelsImagesToS3(email: string, ids: string[]): Promise<void> {
     const photos = await this.service.getPexelsPhotosByIds(ids);
 
     for (const photo of photos) {
@@ -36,7 +35,6 @@ export class PexelsManager {
       const command = new PutObjectCommand({
         Bucket: getEnv("IMAGES_BUCKET_NAME"),
         Body: image.data,
-        // Body: resizedImage,
 
         //@ts-ignore
 
@@ -48,7 +46,10 @@ export class PexelsManager {
     }
   }
 
-  async savePexelsImagesToDynamoDB(email, imageId) {
+  async savePexelsImagesToDynamoDB(
+    email: string,
+    imageId: string
+  ): Promise<void> {
     const id: string = crypto
       .createHash("md5")
       .update(String(`pexels_${imageId}.jpeg`))
@@ -70,11 +71,9 @@ export class PexelsManager {
     await DynamoClient.send(new PutItemCommand(params));
   }
 
-  async savePexelsImages(ids, email) {
+  async savePexelsImages(ids: string[], email: string): Promise<void> {
     const photos = await this.service.getPexelsPhotosByIds(ids);
-    // log("photos: ", photos[0].id);
     for (const photo of photos) {
-      // log(photo);
       //@ts-ignore
       await this.savePexelsImagesToDynamoDB(email, photo.id);
       await this.savePexelsImagesToS3(email, ids);
