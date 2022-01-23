@@ -13,6 +13,8 @@ export const BucketConfig: AWSPartitial = {
             Effect: "Allow",
             Action: [
               "s3:CreateBucket",
+              "s3:DeleteBucket",
+              "s3:UpdateBucket",
               "s3:ListBuckets",
               "s3:GetBucketCors",
               "s3:GetBucket",
@@ -34,7 +36,7 @@ export const BucketConfig: AWSPartitial = {
     Resources: {
       imagesBucket: {
         Type: "AWS::S3::Bucket",
-        DeletionPolicy: "Retain",
+        DeletionPolicy: "Delete",
         Properties: {
           AccessControl: "PublicReadWrite",
           BucketName:

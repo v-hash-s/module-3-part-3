@@ -16,6 +16,9 @@ export const TableConfig: AWSPartitial = {
               "dynamodb:PutItem",
               "dynamodb:DeleteItem",
               "dynamodb:UpdateItem",
+              "dynamodb:CreateTable",
+              "dynamodb:DeleteTable",
+              "dynamodb:UpdateTable",
             ],
             Resource: [
               "arn:aws:dynamodb:*:*:table/${file(env.yml):${self:provider.stage}.USERS_TABLE_NAME}",
@@ -30,10 +33,10 @@ export const TableConfig: AWSPartitial = {
   resources: {
     Resources: {
       galleryTable: {
-        DeletionPolicy: "Retain",
+        DeletionPolicy: "Delete",
         Type: "AWS::DynamoDB::Table",
         Properties: {
-          TableName: "vs-sls-test-gallery",
+          TableName: "vs-sls-prod-gallery",
           KeySchema: [
             {
               AttributeName: "email",

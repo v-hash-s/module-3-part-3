@@ -180,12 +180,36 @@ export class GalleryManager {
     await DynamoClient.send(updateCommand).then(() => log("saved to db"));
   }
 
+  async updateSubclipStatus(filename, email) {
+    const hashedImage = crypto.createHash("md5").update(filename).digest("hex");
+    log("hashed images: ", hashedImage);
+    log("trying to update sublic");
+    const params = {
+      TableName: getEnv("USERS_TABLE_NAME"),
+      Key: {
+        email: { S: email },
+        data: { S: `image_${hashedImage}` },
+      },
+      UpdateExpression: "set Subclip = :subclipStatus",
+      ExpressionAttributeValues: {
+        ":subclipStatus": { BOOL: true },
+      },
+    };
+
+    const updateCommand = new UpdateItemCommand(params);
+    await DynamoClient.send(updateCommand).then(() => log("saved to db"));
+  }
+
   async saveSubclip(filename, email) {
     const sharp = new sharpImage();
     log("email: ", email);
     log("filename: ", filename);
     log(`${email}/${filename}`);
-
+    const contentType = filename.split(".").pop();
+    log("content type: ", contentType);
+    log("filename: ", filename);
+    const imageName = filename.split(".")[0];
+    log("new image name: ", imageName);
     // const commandGet = new GetObjectCommand({
     log("Bucket Name: " + getEnv("IMAGES_BUCKET_NAME"));
     const image = await s3.get(
@@ -198,9 +222,10 @@ export class GalleryManager {
     const params: PutObjectRequest = {
       ACL: "public-read",
       Bucket: getEnv("IMAGES_BUCKET_NAME_SUBCLIP"),
-      Key: `${email}/${filename}`,
+      // Key: `${email}/${filename}`,
+      Key: `${email}/${imageName}_SC.${contentType}`,
       Body: resizedImage,
-      ContentType: "image/jpeg", //!!!!!!!!!!!!!!!!!!!!!!!??????????????????????
+      ContentType: "image/jpeg",
     };
     await s3_other.putObject(params).promise();
     // await s3Client.send(commandPut);

@@ -51,6 +51,7 @@ export const updateStatus = async (event) => {
     // return await manager.updateValue(filename, user);
     await manager.updateValue(filename, user);
     await manager.saveSubclip(filename, user);
+    await manager.updateSubclipStatus(filename, user);
   } catch (error) {
     log("Error occured: " + JSON.stringify(error));
     return errorHandler(error);
@@ -70,4 +71,8 @@ export const getPresignedUrl = async (event) => {
   } catch (error) {
     return errorHandler(error);
   }
+};
+
+export const saveSubclipToDynamo = async (event) => {
+  log("saving subcli to dynamo: ", event);
 };

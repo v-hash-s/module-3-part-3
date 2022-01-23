@@ -32,9 +32,9 @@ export const BucketSubclipConfig: AWSPartitial = {
   },
   resources: {
     Resources: {
-      imagesBucket: {
+      imagesBucketSubclip: {
         Type: "AWS::S3::Bucket",
-        DeletionPolicy: "Retain",
+        DeletionPolicy: "Delete",
         Properties: {
           AccessControl: "PublicReadWrite",
           BucketName:

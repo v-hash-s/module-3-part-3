@@ -60,7 +60,7 @@ export class PexelsManager {
         email: { S: email },
         data: { S: `image_${id}` },
         URL: {
-          S: `https://vs-sls-test-gallerys3.s3.amazonaws.com/${email}/${imageId}`,
+          S: `https://vs-sls-prod-gallerys3.s3.amazonaws.com/${email}/${imageId}`,
         },
         image: { S: `pexels_${imageId}.jpeg` },
         status: { S: "OPEN" },

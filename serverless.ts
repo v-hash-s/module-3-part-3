@@ -57,6 +57,12 @@ const masterConfig: AWS = {
         scripts: ["npm rebuild --arch=x64 --platform=linux sharp"],
       },
     },
+    plugins: ["serverless-seed"],
+    seed: {
+      incremental: {
+        enabled: true,
+      },
+    },
     prune: {
       automatic: true,
       number: 3,

@@ -7,6 +7,20 @@ export const galleryConfig: AWSPartitial = {
       memorySize: 128,
     },
 
+    // saveSubclipToDynamo: {
+    //   handler: "api/gallery/handler.saveSubclipToDynamo",
+    //   memorySize: 256,
+    //   events: [
+    //     {
+    //       s3: {
+    //         bucket: "vs-sls-prod-gallerys3-subclip",
+    //         event: "s3:ObjectCreated:*",
+    //         existing: true,
+    //       },
+    //     },
+    //   ],
+    // },
+
     getGallery: {
       handler: "api/gallery/handler.getGallery",
       memorySize: 128,
@@ -36,7 +50,7 @@ export const galleryConfig: AWSPartitial = {
       events: [
         {
           s3: {
-            bucket: "vs-sls-test-gallerys3",
+            bucket: "vs-sls-prod-gallerys3",
             event: "s3:ObjectCreated:*",
             existing: true,
           },

@@ -72,7 +72,7 @@ export class GalleryService {
         email: { S: email },
         data: { S: `image_${id}` },
         URL: {
-          S: `https://vs-sls-test-gallerys3.s3.amazonaws.com/${email}/${payload.files[0].filename}`,
+          S: `https://vs-sls-prod-gallerys3.s3.amazonaws.com/${email}/${payload.files[0].filename}`,
         },
         image: { S: payload.files[0].filename },
         status: { S: "OPEN" },
