@@ -30,6 +30,8 @@ export class PexelsManager {
       const image = await axios.get(photo.src.original, {
         responseType: "arraybuffer",
       });
+      //@ts-ignore
+      log(`${email}/pexels_${photo.id}.jpeg`);
 
       const command = new PutObjectCommand({
         Bucket: getEnv("IMAGES_BUCKET_NAME"),
@@ -42,7 +44,7 @@ export class PexelsManager {
         ACL: "public-read",
         ContentType: "image/jpeg",
       });
-      await s3Client.send(command);
+      log("sendResponse: " + JSON.stringify(await s3Client.send(command)));
     }
   }
 

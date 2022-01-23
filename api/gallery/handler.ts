@@ -38,6 +38,7 @@ export const getGallery: APIGatewayProxyHandlerV2<Response> = async (event) => {
 
 export const updateStatus = async (event) => {
   log("hello from upload!!!");
+  log(event.Records);
   const manager = new GalleryManager();
 
   try {
@@ -47,8 +48,11 @@ export const updateStatus = async (event) => {
     const filename = event.Records[0].s3.object.key.split("/")[1];
     log("this is filename: ", filename);
 
-    return await manager.updateValue(filename, user);
+    // return await manager.updateValue(filename, user);
+    await manager.updateValue(filename, user);
+    await manager.saveSubclip(filename, user);
   } catch (error) {
+    log("Error occured: " + JSON.stringify(error));
     return errorHandler(error);
   }
 };

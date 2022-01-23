@@ -3,10 +3,12 @@ import { log } from "helper/logger";
 
 export class sharpImage {
   async sharp(image) {
-    const resizedImage = await sharp(image.data)
-      .resize({ width: 512, height: 250 })
+    log("image in sharp length");
+    const resizedImage = await sharp(image)
+      .resize(512, 250, { fit: sharp.fit.cover })
       .toBuffer();
     log(resizedImage);
+    return resizedImage;
   }
 }
 

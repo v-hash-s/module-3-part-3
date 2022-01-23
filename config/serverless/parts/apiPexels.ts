@@ -20,7 +20,7 @@ export const apiPexelsConfig: AWSPartitial = {
   functions: {
     getPexelsPhotos: {
       handler: "api/apiPexels/handler.getPexelsPhotos",
-      memorySize: 128,
+      memorySize: 256,
       events: [
         {
           http: {
@@ -46,7 +46,7 @@ export const apiPexelsConfig: AWSPartitial = {
     // },
     sendMessageSQS: {
       handler: "api/apiPexels/handler.sendMessageSQS",
-      memorySize: 128,
+      memorySize: 256,
       events: [
         {
           http: {
@@ -92,11 +92,11 @@ export const apiPexelsConfig: AWSPartitial = {
 
     postPexelsPhotos: {
       handler: "api/apiPexels/handler.postPexelsPhotos",
-      memorySize: 128,
+      memorySize: 256,
       events: [
         {
           sqs: {
-            arn: "arn:aws:sqs:us-east-1:367315594041:sqs_queue",
+            arn: "arn:aws:sqs:us-east-1:367315594041:pexels_sqs_queue",
           },
         },
       ],

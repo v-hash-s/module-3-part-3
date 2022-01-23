@@ -53,6 +53,9 @@ const masterConfig: AWS = {
       concurrency: 5,
       serializedCompile: true,
       packager: "npm",
+      packagerOptions: {
+        scripts: ["npm rebuild --arch=x64 --platform=linux sharp"],
+      },
     },
     prune: {
       automatic: true,

@@ -2,7 +2,11 @@ import { GalleryService } from "./gallery.service";
 import { getEnv } from "@helper/environment";
 import { QueryParameters } from "./gallery.interfaces";
 import { DynamoClient } from "../../services/dynamodb-client";
-import { ListObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  ListObjectsCommand,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
 import {
   QueryCommand,
   ScanCommand,
@@ -14,8 +18,12 @@ import { APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { log } from "../../helper/logger";
 import { S3Service } from "../../services/s3.service";
-// const S3 = new S3Service();
+const s3 = new S3Service();
+import { S3 } from "aws-sdk";
+import { PutObjectRequest, GetObjectRequest } from "aws-sdk/clients/s3";
+const s3_other = new S3();
 import * as crypto from "crypto";
+import { sharpImage } from "../../services/sharp";
 
 // const converter = require("aws-sdk").DynamoDB.Converter.unmarshall;
 import { DynamoDB } from "aws-sdk";
@@ -170,6 +178,33 @@ export class GalleryManager {
     };
     const updateCommand = new UpdateItemCommand(params);
     await DynamoClient.send(updateCommand).then(() => log("saved to db"));
+  }
+
+  async saveSubclip(filename, email) {
+    const sharp = new sharpImage();
+    log("email: ", email);
+    log("filename: ", filename);
+    log(`${email}/${filename}`);
+
+    // const commandGet = new GetObjectCommand({
+    log("Bucket Name: " + getEnv("IMAGES_BUCKET_NAME"));
+    const image = await s3.get(
+      `${email}/${filename}`,
+      getEnv("IMAGES_BUCKET_NAME")
+    );
+    log("response length: ", image.ContentLength);
+    const resizedImage = await sharp.sharp(image.Body);
+    // const resizedImage = image.Body;
+    const params: PutObjectRequest = {
+      ACL: "public-read",
+      Bucket: getEnv("IMAGES_BUCKET_NAME_SUBCLIP"),
+      Key: `${email}/${filename}`,
+      Body: resizedImage,
+      ContentType: "image/jpeg", //!!!!!!!!!!!!!!!!!!!!!!!??????????????????????
+    };
+    await s3_other.putObject(params).promise();
+    // await s3Client.send(commandPut);
+    log("sent");
   }
   // async saveImageInDB(payload, email): Promise<Response> {
   //   const result = await this.service.isExist(payload, email);
