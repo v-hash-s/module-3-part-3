@@ -20,6 +20,10 @@ export class PexelsManager {
     return email.email;
   }
 
+  async getPexelsPhotos(query, limit) {
+    return await this.service.getPexelsPhotosByQuery(query, limit);
+  }
+
   async savePexelsImagesToS3(email: string, ids: string[]): Promise<void> {
     const photos = await this.service.getPexelsPhotosByIds(ids);
 

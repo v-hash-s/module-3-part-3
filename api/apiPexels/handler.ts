@@ -17,10 +17,11 @@ const S3 = new S3Service();
 export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
   event
 ) => {
-  const client = createClient(getEnv("PEXELS_API_KEY"));
-  const service = new PexelsService(event, client);
+  const manager = new PexelsManager();
+  const query = event.queryStringParameters!.query;
+  const limit = event.queryStringParameters!.limit ?? 10;
   //@ts-ignore
-  const photos = await service.getPexelsPhotosByQuery();
+  const photos = await manager.getPexelsPhotos(query, limit);
   try {
     //@ts-ignore
     const result = { statusCode: 200, content: photos };
@@ -28,10 +29,6 @@ export const getPexelsPhotos: APIGatewayProxyHandlerV2<Response> = async (
   } catch (err) {
     return errorHandler(err);
   }
-};
-
-export const saveImagesSubclip = async (event) => {
-  log("hey from subclipping");
 };
 
 export const postPexelsPhotos = async (event) => {

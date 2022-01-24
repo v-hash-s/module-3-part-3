@@ -14,10 +14,10 @@ export class PexelsService {
     this.client = client;
   }
 
-  async getPexelsPhotosByQuery(): Promise<string> {
-    const photos = await this.client.photos.search({
-      query: this.query,
-      per_page: this.limit,
+  async getPexelsPhotosByQuery(query, limit) {
+    const photos = await client.photos.search({
+      query: query,
+      per_page: limit,
     });
     return photos;
   }
