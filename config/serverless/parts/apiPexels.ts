@@ -31,19 +31,6 @@ export const apiPexelsConfig: AWSPartitial = {
       ],
     },
 
-    // saveImagesSubclip: {
-    //   handler: "api/apiPexels/handler.saveImagesSubclip",
-    //   memorySize: 128,
-    //   events: [
-    //     {
-    //       s3: {
-    //         bucket: "vs-sls-test-gallerys3",
-    //         event: "s3:ObjectCreated:*",
-    //         existing: true,
-    //       },
-    //     },
-    //   ],
-    // },
     sendMessageSQS: {
       handler: "api/apiPexels/handler.sendMessageSQS",
       memorySize: 256,
@@ -66,37 +53,14 @@ export const apiPexelsConfig: AWSPartitial = {
       ],
     },
 
-    // postPexelsPhotos: {
-    //   handler: "api/apiPexels/handler.postPexelsPhotos",
-    //   memorySize: 128,
-    //   events: [
-    //     {
-    //       http: {
-    //         path: "/gallery/pexels",
-    //         method: "post",
-    //       },
-    //     },
-    //   ],
-    // },
-    // saveImagesSubclip: {
-    //   handler: "api/apiPexels/handler.saveImagesSubclip",
-    //   memorySize: 128,
-    //   events: [
-    //     {
-    //       sqs: {
-    //         arn: "arn:aws:sqs:us-east-1:367315594041:sqs_queue",
-    //       },
-    //     },
-    //   ],
-    // },
-
     postPexelsPhotos: {
       handler: "api/apiPexels/handler.postPexelsPhotos",
       memorySize: 256,
       events: [
         {
           sqs: {
-            arn: "arn:aws:sqs:us-east-1:367315594041:pexels_sqs_queue",
+            arn:
+              "arn:aws:sqs:us-east-1:367315594041:vs-sls-prod-pexels_sqs_queue",
           },
         },
       ],

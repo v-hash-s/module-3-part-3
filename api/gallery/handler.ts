@@ -36,7 +36,7 @@ export const getGallery: APIGatewayProxyHandlerV2<Response> = async (event) => {
   }
 };
 
-export const updateStatus = async (event) => {
+export const updateStatusAndSaveSubclip = async (event) => {
   const manager = new GalleryManager();
 
   try {
